@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class interfazdir extends JFrame {
 	 */
 	public interfazdir() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 629, 339);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -87,7 +88,7 @@ public class interfazdir extends JFrame {
 				
 					try {
 						BufferedWriter out = new BufferedWriter(new FileWriter("agenda.txt",true));
-						String cadena = txtNombre.getText()+"," +txtTelefono.getText()+"," +txtCorreo.getText();
+						String cadena = txtNombre.getText()+ " , " + txtTelefono.getText()+ "," +txtCorreo.getText();
 						out.write(cadena);
 						txtNombre.setText("");
 						txtTelefono.setText("");
@@ -122,12 +123,12 @@ public class interfazdir extends JFrame {
 				String nombre = linea.substring(0,indexComa1);
 				while(!nombre.equals(nomBuscar) && (linea!=null)) {
 					linea=in.readLine();
-					indexComa1 = linea.indexOf(",",1);
+					indexComa1 = linea.indexOf(" , ",1);
 					indexComa2 = linea.indexOf(",",indexComa1+1);
 					nombre = linea.substring(0,indexComa1);
 				}
 				if(nombre.equals(nomBuscar)) {
-					tel=linea.substring(indexComa1+1,indexComa2);
+					tel=linea.substring(indexComa1 + 1,indexComa2);
 					correo = linea.substring(indexComa2+1,linea.length());
 					txtNombre.setText(nombre);
 					txtTelefono.setText(tel);
@@ -144,29 +145,28 @@ public class interfazdir extends JFrame {
 		contentPane.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("Mostrar todo");
-		
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BufferedReader in = null;
-				String linea = in.readLine();
-				while (linea!=null) {
-					int indexComa1 =linea.indexOf(",",0);
-					int indexComa2 =linea.indexOf(",",indexComa1+1);
-					String nombre = linea.substring(0,indexComa1);
-					String tel = linea.substring(indexComa1+1,indexComa2);
-					String correo = linea.substring(indexComa2);
-					modelo.addElement(nombre+"|"+tel+"|"+correo);
-					//linea = in.readLine();
-				}
 			}
 		});
 		btnNewButton_2.setBounds(282, 206, 89, 23);
 		contentPane.add(btnNewButton_2);
 		
 		JList list = new JList();
-		list.setBounds(263, 27, 139, 168);
+		list = new JList<>(modelo);
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("agenda.txt"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                modelo.addElement(line);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		list.setBounds(282, 11, 321, 168);
 		contentPane.add(list);
-		
+        
 		}
 	{
 }
