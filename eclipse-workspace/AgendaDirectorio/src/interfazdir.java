@@ -147,6 +147,7 @@ public class interfazdir extends JFrame {
 		
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				BufferedReader in = null;
 				String linea = in.readLine();
 				while (linea!=null) {
 					int indexComa1 =linea.indexOf(",",0);
@@ -155,7 +156,7 @@ public class interfazdir extends JFrame {
 					String tel = linea.substring(indexComa1+1,indexComa2);
 					String correo = linea.substring(indexComa2);
 					modelo.addElement(nombre+"|"+tel+"|"+correo);
-					linea = in.readLine();
+					//linea = in.readLine();
 				}
 			}
 		});
